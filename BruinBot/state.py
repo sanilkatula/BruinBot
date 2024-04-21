@@ -4,6 +4,7 @@ import os
 import reflex as rx
 from typing import List, Tuple
 from IPython.display import Markdown
+import time
 
 # Configuration settings for the generative model
 generation_config = {
@@ -14,6 +15,10 @@ generation_config = {
 }
 
 safety_settings = []
+question_list = []
+timestamp_list = []
+start_time = None
+
 model = genai.GenerativeModel(model_name="gemini-1.5-pro-latest",
                               generation_config=generation_config,
                               safety_settings=safety_settings,
@@ -92,6 +97,34 @@ def training_queries():
   ])
   return convo
 
+def calculate_mood(question):
+  global start_time  # Use the global start time
+  current_time = time.time()
+
+  if start_time is None:
+    start_time = current_time  # Set the start time if it's the first question
+
+  elapsed_time_seconds = current_time - start_time  # Calculate the elapsed time since the first question in seconds
+  elapsed_time_minutes = elapsed_time_seconds / 60  # Convert seconds to minutes
+
+  # Round the elapsed time to one decimal place
+  elapsed_time_minutes = round(elapsed_time_minutes, 1)
+
+  question_list.append(question)
+  timestamp_list.append(elapsed_time_minutes)
+  
+  if len(question_list) > 5:
+    del question_list[0]
+    del timestamp_list[0]
+
+  response = model.generate_content("Rate my mood from 1.0 to 10.0 for all query responses in my list. Then find the AVERAGE of ALL the queries. Rate a query response 5.0 if you cannot calculate the mood. ONLY SAY THE DECIMAL NUMBER AVERAGE AND NOTHING ELSE. Here is a list of my queries: " + str(question_list))
+  
+  print("Question:", question)
+  print("Response:", response.text, end='')
+  print("Time since first question:", elapsed_time_minutes, "minutes")
+  print("---------------------------------------")
+
+
 
 class TutorialState(rx.State):
     question: str
@@ -102,12 +135,13 @@ class TutorialState(rx.State):
       self.convo = training_queries()
 
     async def answer(self):
-        GOOGLE_API_KEY = "AIzaSyC7LY2KvbhIy7zVKPiB-Xzi7sUsdvpzR9w"
+        GOOGLE_API_KEY = "AIzaSyDvOhb0O-Wyy6i7SDCMw0e8gjhMu09Sx_k"
         genai.configure(api_key=GOOGLE_API_KEY)
-
-        answer = self.convo.send_message(self.question)
-        self.chat_history.append((self.question, answer.text))
-        self.question = ""
-        yield
+        if self.question:
+          answer = self.convo.send_message(self.question)
+          self.chat_history.append((self.question, answer.text))
+          calculate_mood(self.question)
+          self.question = ""
+          yield
 
 
