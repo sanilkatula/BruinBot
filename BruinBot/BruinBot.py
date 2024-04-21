@@ -71,9 +71,67 @@ def action_bar() -> rx.Component:
 #         )
 #     )
 
-# def index() -> rx.Component:
 
-#     return rx.link(rx.button("Log In"), href="/home/")
+@rx.page(route="/", title="Welcome to BruinBuddy")
+def index() -> rx.Component:
+    # Create a welcoming message with enhanced style
+    greeting = rx.text(
+        "Welcome to BruinBuddy!",
+        style={
+            "font-size": "24px",
+            "font-weight": "bold",
+            "color": "navy",
+            "padding": "20px",
+            "text-align": "center"  # Center-align the text
+        }
+    )
+
+    # Subtext to describe BruinBuddy's purpose with refined style
+    description = rx.text(
+        "Your compassionate companion, here to listen, help, and empower you.",
+        style={
+            "font-size": "16px",
+            "color": "darkgrey",
+            "padding": "10px",
+            "text-align": "center"  # Center-align the text
+        }
+    )
+
+    # Stylish button that leads to the main page, with enhanced style
+    login_button = rx.link(
+        rx.button(
+            "Log In",
+            style={
+                "background-color": "teal",  # Primary color for the button
+                "color": "white",  # Text color for better contrast
+                "border": "none",  # No border for a cleaner look
+                "padding": "12px 24px",  # Comfortable padding for easier interaction
+                "border-radius": "8px",  # Soft rounded corners for a modern look
+                "cursor": "pointer",  # Cursor changes to pointer to indicate interactivity
+                "font-weight": "bold",  # Bold text for better readability
+                "margin-top": "20px",  # Margin top for spacing from other elements
+                "button-align": "center",  # Text is centered within the button
+                "transition": "background-color 0.3s, transform 0.3s",  # Smooth transition for color and transformation
+            }
+        ),
+        href="/home/",
+        on={
+            "mouseover": {"background-color": "#005a5a"},  # Darker teal on hover for visual feedback
+            "mouseout": {"background-color": "teal"},  # Revert to original color on mouse out
+            "mousedown": {"transform": "scale(0.95)"},  # Slightly shrink on click
+            "mouseup": {"transform": "scale(1.0)"}  # Return to normal size on release
+        }
+
+    )
+
+    # Arrange components vertically with better spacing and alignment
+    layout = rx.center(rx.vstack(rx.center(greeting, width = "100%"), description, rx.center(login_button, width="100%")))
+
+
+    return layout
+
+
+
 
 
 @rx.page(route="/home", title="Home Page")
@@ -92,10 +150,7 @@ def home() -> rx.Component:
     )
 
 app = rx.App(
-    theme=rx.theme(
-        appearance="dark",
-        accent_color="violet",
-    ),
+
 )
 
 # app.add_page(signup)
