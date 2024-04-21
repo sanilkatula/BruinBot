@@ -1,33 +1,67 @@
-# style.py
 import reflex as rx
 
-# Common styles for questions and answers.
-shadow = "rgba(0, 0, 0, 0.15) 0px 2px 8px"
-chat_margin = "20%"
-message_style = dict(
-    padding="1em",
-    border_radius="5px",
-    margin_y="0.5em",
-    box_shadow=shadow,
-    max_width="30em",
-    display="inline-block",
-)
+# Enhanced color palette
+background_color = '#f0f2f5'
+primary_color = '#0056b3'
+secondary_color = '#e9ecef'
+text_color = '#343a40'
+button_hover_color = '#004494'
 
-# Set specific styles for questions and answers.
-question_style = message_style | dict(
-    margin_left=chat_margin,
-    background_color=rx.color("gray", 4),
-)
-answer_style = message_style | dict(
-    margin_right=chat_margin,
-    background_color=rx.color("accent", 8),
-)
+# Common styles
+common_style = {
+    'border_radius': '8px',
+    'box_shadow': '0 2px 12px rgba(0,0,0,0.15)',
+    'font_family': 'Arial, sans-serif',
+    'color': text_color,
+}
 
-# Styles for the action bar.
-input_style = dict(
-    border_width="1px", padding="1em", box_shadow=shadow
-)
-button_style = dict(
-    background_color=rx.color("accent", 10),
-    box_shadow=shadow,
-)
+# Define styles
+chat_header_style = {
+    **common_style,
+    'padding': '12px',
+    'background_color': primary_color,
+    'color': 'white',
+    'text_align': 'center',
+}
+
+chat_box_style = {
+    **common_style,
+    'width': '350px',
+    'height': '500px',
+    'background_color': secondary_color,
+    'border': '1px solid #ccc',
+    'flex_direction': 'column',
+}
+
+chat_messages_style = {
+    'flex': 1,
+    'padding': '10px',
+    'overflow_y': 'auto',
+    'background_color': background_color,
+}
+
+chat_input_style = {
+    **common_style,
+    'display': 'flex',
+    'padding': '10px',
+    'background_color': secondary_color,
+}
+
+input_style = {
+    'flex': 1,
+    'padding': '8px 12px',
+    'border': '1px solid #bbb',
+    'margin_right': '5px',
+    'background_color': 'white',
+}
+
+button_style = {
+    **common_style,
+    'padding': '8px 16px',
+    'background_color': primary_color,
+    'hover': {
+        'background_color': button_hover_color,
+    },
+    'cursor': 'pointer',
+}
+
