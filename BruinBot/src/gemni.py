@@ -37,7 +37,7 @@ def to_markdown(text):
 def initialize_gemini():
     try:
         # Replace 'userdata.get' with the method you use to securely fetch your API key.
-        GOOGLE_API_KEY = "AIzaSyA8gAE5J-9ve6Y0blshZtMwMbQnNbsUAe8"
+        GOOGLE_API_KEY = $hidden$
         genai.configure(api_key=GOOGLE_API_KEY)
         model = genai.GenerativeModel('gemini-pro')        
         return model
